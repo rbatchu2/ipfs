@@ -6,7 +6,7 @@ API_SECRET = 'f72004d86684bd629c8ec3c3aa30c6bfda807262c40f4ec74870bef6c21593b6'
 def pin_to_ipfs(data):
     assert isinstance(data, dict), "Error pin_to_ipfs expects a dictionary"
     
-    url = "https://api.pinata.cloud/pinning/pinFileToIPFS"
+    url = "https://api.pinata.cloud/pinning/pinJSONToIPFS"
     headers = {
         "pinata_api_key": API_KEY,
         "pinata_secret_api_key": API_SECRET
