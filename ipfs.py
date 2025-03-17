@@ -18,8 +18,11 @@ def pin_to_ipfs(data):
 
 def get_from_ipfs(cid, content_type="json"):
     assert isinstance(cid, str), "get_from_ipfs accepts a cid in the form of a string"
-    #YOUR CODE HERE
+    gateway_url = "https://fuchsia-accepted-dingo-811.mypinata.cloud/ipfs/"
+    url = gateway_url + cid
     
-    data = {}  # Placeholder for the retrieved data
+    response = requests.get(url)
+    data = response.json()
+
     assert isinstance(data, dict), "get_from_ipfs should return a dict"
     return data
