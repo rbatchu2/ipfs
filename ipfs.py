@@ -20,19 +20,13 @@ def get_from_ipfs(cid, content_type="json"):
     assert isinstance(cid, str), "get_from_ipfs accepts a cid in the form of a string"
     gateway_url = "https://fuchsia-accepted-dingo-811.mypinata.cloud/ipfs/"
     url = gateway_url + cid
-    
     response = requests.get(url)
-    if response.status_code != 200:
-        raise Exception(f"Error retrieving data: {response.status_code} - {response.text}")
     
-    if content_type == "json":
-        try:
-            data = response.json()
-        except json.JSONDecodeError as e:
-            raise Exception(f"Error decoding JSON from IPFS: {e}")
-    else:
-        data = response.text
+    if response.status_code == 403:
+        public_gateway_url = "https://ipfs.io/ipfs/"
+        url = public_gateway_url + cid
+        response = requests.get(url)
     
-    if content_type == "json" and not isinstance(data, dict):
-        raise Exception("get_from_ipfs should return a dict")
+    data = response.json()
+    
     return data
