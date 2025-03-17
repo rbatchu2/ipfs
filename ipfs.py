@@ -22,7 +22,17 @@ def get_from_ipfs(cid, content_type="json"):
     url = gateway_url + cid
     
     response = requests.get(url)
-    data = response.json()
-
-    assert isinstance(data, dict), "get_from_ipfs should return a dict"
+    if response.status_code != 200:
+        raise Exception(f"Error retrieving data: {response.status_code} - {response.text}")
+    
+    if content_type == "json":
+        try:
+            data = response.json()
+        except json.JSONDecodeError as e:
+            raise Exception(f"Error decoding JSON from IPFS: {e}")
+    else:
+        data = response.text
+    
+    if content_type == "json" and not isinstance(data, dict):
+        raise Exception("get_from_ipfs should return a dict")
     return data
